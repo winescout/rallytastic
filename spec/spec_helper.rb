@@ -7,3 +7,5 @@ require 'spec/autorun'
 Spec::Runner.configure do |config|
   
 end
+
+MongoMapper.database = 'rallytastic_test'
