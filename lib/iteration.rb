@@ -20,17 +20,39 @@ class Iteration
 
 
   def refresh
-    self.rally_uri ||= raw_json["_ref"]
-    self.name = raw_json["Name"]
-    self.theme = raw_json["Theme"]
-    self.state = raw_json["State"]
-    self.created_on = raw_json["_CreatedAt"]
-    self.start_date = raw_json["StartDate"]
-    self.end_date = raw_json["EndDate"]
-    self.resources = raw_json["Resources"].to_i
+    from_rally :rally_uri, :_ref
+    from_rally :name
+    from_rally :theme
+    from_rally :state
+    from_rally :created_on, :_CreatedAt
+    from_rally :start_date, :StartDate
+    from_rally :end_date, :EndDate
+    from_rally :resources
+
     parse_ref :project_uri, raw_json["Project"]
     parse_ref :revision_uri, raw_json["RevisionHistory"]
+
     self.save
   end
 
+  def stories
+    Story.all(:project_uri => self.rally_uri)
+  end
+
+  #TODO: there is no pagination understanding here
+  def refresh_stories
+    existing = Story.all(:iteration_uri => self.rally_uri)
+    query_result = RallyAPI.query(:heirarchical_requirement, :query => "(Iteration = #{self.rally_id})", :limit => 100)
+    
+    stories = query_result["QueryResult"]["Results"]
+
+    uris = []
+    stories.each do |story| 
+      Story.from_uri(story["_ref"]); uris << story["_ref"] 
+    end
+    
+    #remove stale stories
+    stale = existing.reject{|obj| uris.include? obj.rally_uri}
+    
+  end
 end

@@ -22,18 +22,21 @@ class Project
 
   #TODO: extend MM key method to do this mapping
   def refresh
-    self.name = raw_json["Name"]
-    self.rally_id ||= raw_json["ObjectID"]
-    self.description = raw_json["Description"]
-    self.state = raw_json["State"]
-    self.notes = raw_json["Notes"]
-    self.rally_uri ||= raw_json["_ref"]
+    from_rally :name
+    from_rally :rally_id, :ObjectID
+    from_rally :description
+    from_rally :state
+    from_rally :notes
+    from_rally :rally_uri, :_ref
+
     parse_refs :iteration_uris, raw_json["Iterations"]
     parse_refs :user_uris, raw_json["Users"]
     parse_refs :release_uris, raw_json["Releases"]
     parse_refs :children_uris, raw_json["Children"]
+
     parse_ref :parent_uri, raw_json["Parent"]
     parse_ref :owner_uri, raw_json["Owner"]
+
     self.save
   end
 

@@ -1,14 +1,39 @@
-require File.join(File.dirname(__FILE__), 'spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Iteration do 
   before do 
     Iteration.collection.remove
     hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'iteration.txt'))
-    RallyAPI.stub(:get).and_return(eval(hash_vals))
+    RallyAPI.stub!(:get).and_return(eval(hash_vals))
   end
+
+
+  describe "stories" do
+    before do 
+      Iteration.collection.remove
+      Story.collection.remove
+      story_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story.txt'))
+      RallyAPI.stub!(:get).and_return(eval(story_vals))
+      @iteration = Iteration.new(:rally_id => "462353428")
+      query_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story_query.txt'))
+      RallyAPI.stub!(:query).and_return(eval(query_vals))
+    end
+    
+    it "should have list of stories" do 
+      @iteration.stories.should_not be_nil
+    end    
+    
+    it "should refresh stories" do 
+      @iteration.refresh_stories
+      @iteration.stories.size.should > 0
+    end
+  end
+  
+
   it "should be a iteration" do 
     Iteration.new.class.should == Iteration
   end
+  
 
   describe "refreshing" do 
     before do 
@@ -40,7 +65,7 @@ describe Iteration do
     end
     it "should assign resources"  do 
       @iteration.refresh
-      @iteration.resources.should == "2"
+      @iteration.resources.should == "2.0"
     end
 
     it "should assign revision_history" do 
