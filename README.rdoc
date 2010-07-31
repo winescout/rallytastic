@@ -2,17 +2,19 @@
 
 == Congiguration
 
-* In a file that is read at loadtime setup your username and password
-    RallyAPI::configure do |config|
-      config.user = "username@AwesomeCompany.com"
-      config.password = "password"
-    end
+In a file that is read at loadtime setup your username and password
+  RallyAPI::configure do |config|
+    config.user = "username@AwesomeCompany.com"
+    config.password = "password"
+  end
 
-* You also need to have Mongo running, and let your app know what database to use
-** Put this in a config file
-    MongoMapper.database = 'rallytastic_dev'
-** You should also set mongo to use a testing database in spec/spec_helper.rb
-    MongoMapper.database = 'rallytastic_test'
+You also need to have Mongo running, and let your app know what database to use
+
+Put this in a config file
+  MongoMapper.database = 'rallytastic_dev'
+
+You should also set mongo to use a testing database in spec/spec_helper.rb
+  MongoMapper.database = 'rallytastic_test'
 
 ==Usage
 There isn't much sugar yet for bootstrapping your database of Rally Projects and iterations.  For now the best way to get up and running is to know the _ref of a top level project.  From there, you can discover your Rally tree
