@@ -1,5 +1,22 @@
 class RallyAPI
+  class Configure
+    attr_accessor :user, :password
+  end
+
+  class CredentialsError < RestClient::Unauthorized; end
+
   class << self
+    @configuration = nil
+
+    def configure(&block)
+      @configuration = @configuration || Configure.new
+      yield @configuration
+    end
+
+    def configuration
+      @configuration
+    end
+
     def get resource      
       uri = resource.rally_uri || [endpoint(resource), uri_extension].join(".")
       JSON.parse(rally_resource[uri].get)[resource.class.to_s]    
@@ -24,10 +41,13 @@ class RallyAPI
     end
 
     def rally_resource
+      if self.configuration.user.nil? ||  self.configuration.password.nil?
+        raise CredentialsError.new 
+      end
       uri = "https://rally1.rallydev.com/slm/webservice/1.19"
       RestClient::Resource.new(uri, 
-                               :user => 'xxx', 
-                               :password => 'xxx')
+                               :user => self.configuration.user, 
+                               :password => self.configuration.password)
     end
   end
 end

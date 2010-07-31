@@ -1,6 +1,45 @@
 = rallytastic
 
-Description goes here.
+== Congiguration
+
+* In a file that is read at loadtime setup your username and password
+    RallyAPI::configure do |config|
+      config.user = "username@AwesomeCompany.com"
+      config.password = "password"
+    end
+
+* You also need to have Mongo running, and let your app know what database to use
+** Put this in a config file
+    MongoMapper.database = 'rallytastic_dev'
+** You should also set mongo to use a testing database in spec/spec_helper.rb
+    MongoMapper.database = 'rallytastic_test'
+
+==Usage
+There isn't much sugar yet for bootstrapping your database of Rally Projects and iterations.  For now the best way to get up and running is to know the _ref of a top level project.  From there, you can discover your Rally tree
+
+To get your whole tree in IRB:
+  > require 'lib/rallytastic.rb'
+  > parent_project = Project.new(:rally_id => 123456)
+  > parent_project.refresh
+  > parent_project.refresh_children
+  > parent_project.children.each do |project|
+  >   project.refresh
+  >   project.refresh_iterations
+  >   project.iterations.each do |iteration|
+  >     iteration.refresh
+  >     iteration.refresh_stories
+  >     iteration.stories.each do |story|
+  >     story.refresh
+  >   end
+  >  end
+  > end
+
+== TODO
+There are some quick wins that would make Rallytastic a lot more usefull.  Here are some things on my short list
+* Deep refresh - It should be straight forward to walk down the tree recursivly and refresh everything
+* Find Projects by name - _ref ids are not easy to discover if you don't already know the _ref ids.  Projects are searchable by name in the API, just not searchable yet in Rallytastic
+* Mapping for Releases
+* Put/Post/Delete - Rallytastic is pretty good at doing Get operations, totally lacking on the others
 
 == Note on Patches/Pull Requests
  
