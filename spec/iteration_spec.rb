@@ -3,8 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe Iteration do 
   before do 
     Iteration.collection.remove
-    hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'iteration.txt'))
-    RallyAPI.stub!(:get).and_return(eval(hash_vals))
+    @hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'iteration.txt'))
+    RallyAPI.stub!(:get).and_return(eval(@hash_vals))
   end
   
 
@@ -12,6 +12,16 @@ describe Iteration do
     Iteration.new.class.should == Iteration
   end
   
+  describe "#associate" do 
+    before do 
+      @iteration = Iteration.new(:rally_uri => "http://testuri.com")
+    end
+
+    it "should associate project" do 
+      @iteration.associate(eval(@hash_vals))
+      @iteration.project.should_not be_nil
+    end
+  end
 
   describe "refreshing" do 
     before do 

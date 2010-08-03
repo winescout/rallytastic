@@ -35,9 +35,9 @@ class Iteration
     from_rally :resources
 
     self.save
-  rescue ArgumentError
+  rescue ArgumentError #getting some bad created_on dates
     puts "Errored on #{self.name}"
-    self.save #save what you can
+    self.save # save what you can
   end
 
   def associate hash_values=nil
