@@ -1,7 +1,25 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe Story do 
-  describe "refreshing" do 
+  describe "#associate" do 
+    before do 
+      @hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story.txt'))
+      @story = Story.new(:rally_uri => "http://testuri.com")
+    end
+    
+    it "should associate parent" do 
+      @story.associate(eval(@hash_vals)["HierarchicalRequirement"])
+      @story.parent.should_not be_nil
+    end
+
+    it "should associate iteration" do 
+      @story.associate(eval(@hash_vals)["HierarchicalRequirement"])
+      @story.iteration.should_not be_nil
+    end
+
+  end
+
+  describe "#refresh" do 
     before do 
       hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story.txt'))
       RallyAPI.stub(:get).and_return(eval(hash_vals))

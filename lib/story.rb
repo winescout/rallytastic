@@ -27,7 +27,8 @@ class Story
   field :rally_hash, :type => Hash
 
   referenced_in :iteration
-  references_many :children, :class_name => "Story"
+  referenced_in :parent, :class_name => "Story", :inverse_of => :children
+  references_many :children, :class_name => "Story", :inverse_of => :parent
 
   def refresh hash_values=nil
     @rally_hash = hash_values
@@ -48,4 +49,20 @@ class Story
 
     self.save
   end
+
+  def associate hash_values=nil
+    @rally_hash = hash_values if hash_values
+    if @rally_hash.has_key?("Iteration")
+      iteration = Iteration.find_or_create_by(:rally_uri => @rally_hash["Iteration"]["_ref"])
+      self.iteration = iteration
+    end
+    
+    if @rally_hash["Parent"]
+      story = Story.find_or_create_by(:rally_uri => @rally_hash["Parent"]["_ref"])
+      self.parent = story
+    end
+
+    self.save
+  end
+
 end

@@ -6,6 +6,18 @@ describe Project do
     RallyAPI.stub(:get).and_return(eval(@hash_vals))
   end
 
+  describe "#associate" do 
+    before do 
+      @project = Project.new(:rally_uri => "http://testuri.com")
+    end
+
+    it "should associate project" do 
+      @project.associate(eval(@hash_vals))
+      @project.parent.should_not be_nil
+    end
+  end
+
+
   describe "looking up attrs from Rally for invalid project" do 
    before do 
      Project.collection.remove

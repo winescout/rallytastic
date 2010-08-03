@@ -34,5 +34,10 @@ class Project
   def associate hash_values=nil
     @rally_hash = hash_values if hash_values
     #TODO: associate with user when users are supported
+    if @rally_hash.has_key?("Parent")
+      parent = Project.find_or_create_by(:rally_uri => @rally_hash["Parent"]["_ref"])
+      self.parent = parent
+    end
+    self.save
   end
 end
