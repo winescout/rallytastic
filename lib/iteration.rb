@@ -23,7 +23,8 @@ class Iteration
   referenced_in :project
   references_many :stories
 
-  def refresh
+  def refresh hash_values=nil
+    @rally_hash = hash_values
     from_rally :rally_uri, :_ref
     from_rally :name
     from_rally :theme
@@ -33,6 +34,18 @@ class Iteration
     from_rally :end_date, :EndDate
     from_rally :resources
 
+    self.save
+  rescue ArgumentError
+    puts "Errored on #{self.name}"
+    self.save #save what you can
+  end
+
+  def associate hash_values=nil
+    @rally_hash = hash_values if hash_values
+    if @rally_hash.has_key?("Project")
+      project = Project.find_or_create_by(:rally_uri => @rally_hash["Project"]["_ref"])
+      project.iterations << self
+    end
     self.save
   end
 end

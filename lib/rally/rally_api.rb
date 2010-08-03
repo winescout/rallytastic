@@ -40,20 +40,28 @@ class RallyAPI
       if options.has_key? :pagesize
         option_string = option_string.merge(parsed_pagesize(options[:pagesize]))
       end
+
+      if options.has_key? :fetch
+        option_string = option_string.merge(parsed_fetch(options[:fetch]))
+      end
       option_string
     end
 
+    def parsed_fetch(fetch)
+      {"fetch" => fetch}
+    end
+
     def parsed_start(start)
-      {:start => start.to_i}
+      {"start" => start.to_i}
     end
 
     def parsed_pagesize(pagesize)
-      {:pagesize => pagesize.to_i}
+      {"pagesize" => pagesize.to_i}
     end
     
     def parsed_query conditions
       tokens = conditions.collect{|k,v| query_token(k,v)}
-      {:query => tokens.join(" and ")}
+      {"query" => tokens.join(" and ")}
     end
 
     def query_token k,v
@@ -65,12 +73,12 @@ class RallyAPI
         "ne" => "!="}
       field = k.respond_to?("key") ? k.key : k
       operator = k.respond_to?("operator") ? operators[k.operator] : "="
-      "( #{field.capitalize} #{operator} \"#{v}\" )"
+      "(#{field.capitalize} #{operator} \"#{v}\")"
     end
 
     def do_get uri, options = nil
       if options
-        rally_resource[uri].get(options)
+        rally_resource[uri].get(:params => options)
       else
         rally_resource[uri].get
       end

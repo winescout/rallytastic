@@ -4,6 +4,10 @@ module Rally
       obj = first(:conditions => {:rally_uri => uri}) || new(:rally_uri => uri)
       obj.refresh
     end
+
+    def rally_query options={}
+      RallyAPI.all(self, options)
+    end
   end
 
   module ParsingHelpers
@@ -14,18 +18,28 @@ module Rally
         raise "Could not fetch resource"
       end
       
+      if @rally_hash
+        return @rally_hash 
+      else
+        @rally_hash = get_fields_from_rally
+      end
+  
+      @rally_hash
+  
+    end
+  
+    private
+
+    def get_fields_from_rally
       rally_hash = RallyAPI.get(self)
       
       #special case for heirarchical_requirements
       if rally_hash.has_key? "HierarchicalRequirement"
         rally_hash = rally_hash["HierarchicalRequirement"]
       end
-  
+
       rally_hash
-  
     end
-  
-    private
 
     #next 3 are for mapping from rally to mongo
     def from_rally attr, key=nil

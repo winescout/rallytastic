@@ -29,7 +29,8 @@ class Story
   referenced_in :iteration
   references_many :children, :class_name => "Story"
 
-  def refresh
+  def refresh hash_values=nil
+    @rally_hash = hash_values
     from_rally :rally_uri, :_ref
     from_rally :name
     from_rally :notes

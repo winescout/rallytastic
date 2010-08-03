@@ -31,52 +31,57 @@ describe RallyAPI do
     end
 
     it "should set query part of complex query" do 
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Name = "Fred" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Name = "Fred")'))
       RallyAPI.all(MockResource, :start => 20, :conditions => {:name => "Fred"})
     end
 
     it "should set start part of complex query" do 
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:start => 20))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("start" => 20))
       RallyAPI.all(MockResource, :start => 20, :conditions => {:name => "Fred"})
     end
 
+    it "should set boolean fetch" do 
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("fetch" => true))
+      RallyAPI.all(MockResource, :fetch => true)
+    end
+
     it "should set start" do 
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:start => 20))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("start" => 20))
       RallyAPI.all(MockResource, :start => 20)
     end
 
     it "should set pagesize" do 
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:pagesize => 20))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("pagesize" => 20))
       RallyAPI.all(MockResource, :pagesize => 20)
     end
 
     it "should accept an equality match" do
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Name = "Fred" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Name = "Fred")'))
       RallyAPI.all(MockResource, :conditions => {:name => "Fred"})
     end
 
     it "should accept > match" do
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Count > "1" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Count > "1")'))
       RallyAPI.all(MockResource, :conditions => {:count.gt => 1})
     end
 
     it "should accept >= match" do 
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Count >= "1" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Count >= "1")'))
       RallyAPI.all(MockResource, :conditions => {:count.gte => 1})
     end
 
     it "should accept < match" do
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Count < "1" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Count < "1")'))
       RallyAPI.all(MockResource, :conditions => {:count.lt => 1})
     end
 
     it "should accept =< match" do
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Count <= "1" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Count <= "1")'))
       RallyAPI.all(MockResource, :conditions => {:count.lte => 1})
     end
 
     it "should accept != match" do 
-      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Count != "1" )'))
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including("query" => '(Count != "1")'))
       RallyAPI.all(MockResource, :conditions => {:count.ne => 1})
     end
   end

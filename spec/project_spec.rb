@@ -2,8 +2,8 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe Project do 
   before do 
-    hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'project.txt'))
-    RallyAPI.stub(:get).and_return(eval(hash_vals))
+    @hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'project.txt'))
+    RallyAPI.stub(:get).and_return(eval(@hash_vals))
   end
 
   describe "looking up attrs from Rally for invalid project" do 
@@ -22,6 +22,11 @@ describe Project do
       Project.collection.remove
       @name = "Down the hatch"
       @project = Project.new(:rally_uri => "http://demouri.com")
+    end
+
+    it "should accept a hash of values" do 
+      RallyAPI.should_not_receive(:get)
+      @project.refresh eval(@hash_vals)
     end
 
     it "should pull name" do 

@@ -7,10 +7,6 @@ class Project
     def rally_uri
       "/project.js"
     end
-    
-    def rally_query options={}
-      RallyAPI.all(self, options)
-    end
   end
 
   field :name
@@ -24,7 +20,8 @@ class Project
   references_many :children, :class_name => "Project"
   references_many :iterations  
 
-  def refresh
+  def refresh hash_values=nil
+    @rally_hash = hash_values if hash_values
     from_rally :name
     from_rally :description
     from_rally :state
@@ -32,5 +29,10 @@ class Project
 
     self.save
 
+  end
+
+  def associate hash_values=nil
+    @rally_hash = hash_values if hash_values
+    #TODO: associate with user when users are supported
   end
 end
