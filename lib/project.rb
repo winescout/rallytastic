@@ -7,6 +7,10 @@ class Project
     def rally_uri
       "/project.js"
     end
+    
+    def rally_query options={}
+      RallyAPI.all(self, options)
+    end
   end
 
   field :name

@@ -30,6 +30,26 @@ describe RallyAPI do
       RallyAPI.all(MockResource, :conditions => {:name => "Fred"})
     end
 
+    it "should set query part of complex query" do 
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Name = "Fred" )'))
+      RallyAPI.all(MockResource, :start => 20, :conditions => {:name => "Fred"})
+    end
+
+    it "should set start part of complex query" do 
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:start => 20))
+      RallyAPI.all(MockResource, :start => 20, :conditions => {:name => "Fred"})
+    end
+
+    it "should set start" do 
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:start => 20))
+      RallyAPI.all(MockResource, :start => 20)
+    end
+
+    it "should set pagesize" do 
+      RallyAPI.should_receive(:do_get).with(anything(), hash_including(:pagesize => 20))
+      RallyAPI.all(MockResource, :pagesize => 20)
+    end
+
     it "should accept an equality match" do
       RallyAPI.should_receive(:do_get).with(anything(), hash_including(:query => '( Name = "Fred" )'))
       RallyAPI.all(MockResource, :conditions => {:name => "Fred"})

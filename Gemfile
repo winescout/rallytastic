@@ -5,4 +5,4 @@ gem 'bson_ext'
 gem 'rest-client'
 gem 'rspec'
 gem 'autotest'
-
+gem 'thor'
