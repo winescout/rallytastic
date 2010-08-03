@@ -13,7 +13,7 @@ end if File.exist?(gemfile)
 
 
 lib = File.dirname(__FILE__)
-require 'mongo_mapper'
+require 'mongoid'
 require 'rest_client'
 require File.join(lib, 'rally/parsing_helpers.rb')
 require File.join(lib, 'story.rb')

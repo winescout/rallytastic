@@ -5,7 +5,7 @@ describe Story do
     before do 
       hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story.txt'))
       RallyAPI.stub(:get).and_return(eval(hash_vals))
-      @story = Story.new(:rally_id => 1111)
+      @story = Story.new(:rally_uri => "http://testuri")
       @story.refresh
     end
 
@@ -18,19 +18,11 @@ describe Story do
     end
 
     it "should set the created_on" do 
-      @story.created_on.should ==DateTime.parse("2009-06-11 05:00:00 UTC")
+      @story.created_on.should ==DateTime.parse("2009-06-11UTC")
     end
  
-    it "should set the rally_id" do 
-      @story.rally_id.should == "1111"
-    end
-    
     it "should set the description" do 
       @story.description.should == "You've trained for it, now do it.  Done when, you run 26.2 miles."
-    end
-
-    it "should set the discussion_uris" do 
-      @story.discussion_uris.should == []
     end
 
     it "should set the formatted_id" do 
@@ -49,10 +41,6 @@ describe Story do
       @story.blocked.should === false
     end
 
-    it "should set iteration_uri" do 
-      @story.iteration_uri.should == "https://rally1.rallydev.com/slm/webservice/1.19/iteration/234242424.js"
-    end
-    
     it "should set plan_estimate" do 
       @story.plan_estimate.should == 3
     end
@@ -61,10 +49,6 @@ describe Story do
       @story.rank.should == "86292398717311774535928819836502410.432"
     end 
     
-    it "should set release_uri" do 
-      @story.release_uri.should == "https://rally1.rallydev.com/slm/webservice/1.19/release/3424242.js"
-    end
-
     it "should set schedule_state" do 
       @story.schedule_state.should == "Accepted"
     end

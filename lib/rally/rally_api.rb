@@ -16,38 +16,56 @@ class RallyAPI
     def configuration
       @configuration
     end
+    
+    def all resource, options ={}
+      check_configuration
+      do_get(resource.rally_uri, parsed_options(options))
+    end
 
-    def get resource      
-      uri = resource.rally_uri || [endpoint(resource), uri_extension].join(".")
-      JSON.parse(rally_resource[uri].get)[resource.class.to_s]    
+    def get resource     
+      check_configuration 
+      JSON.parse(do_get(resource.rally_uri))[resource.class.to_s]    
     end
     
-    def endpoint resource
-      if resource.respond_to? "endpoint"
-        endpoint = resource.endpoint
-      else
-        endpoint = ["/",resource.class.to_s.downcase].join
+    def parsed_options options
+      option_string = {}
+      if options.has_key? :conditions
+        option_string.merge! parsed_query(options[:conditions])
       end
-      
-      #if we are fetching an instance, add the objectID
-      if resource.respond_to? "rally_id"
-        endpoint = [endpoint, resource.rally_id].join("/")
-      end
-      endpoint
     end
-    
-    def uri_extension
-      "js"
+
+    def parsed_query conditions
+      tokens = conditions.collect{|k,v| query_token(k,v)}
+      {:query => tokens.join(" and ")}
+    end
+
+    def query_token k,v
+      operators ={
+        "gt" => ">",
+        "gte" => ">=",
+        "lt" => "<",
+        "lte" => "<=",
+        "ne" => "!="}
+      field = k.respond_to?("key") ? k.key : k
+      operator = k.respond_to?("operator") ? operators[k.operator] : "="
+      "( #{field.capitalize} #{operator} \"#{v}\" )"
+    end
+
+    def do_get uri, options = {}
+      rally_resource[uri].get(options)
     end
 
     def rally_resource
-      if self.configuration.user.nil? ||  self.configuration.password.nil?
-        raise CredentialsError.new 
-      end
       uri = "https://rally1.rallydev.com/slm/webservice/1.19"
       RestClient::Resource.new(uri, 
                                :user => self.configuration.user, 
                                :password => self.configuration.password)
+    end
+
+    def check_configuration
+      if self.configuration.user.nil? ||  self.configuration.password.nil?
+        raise CredentialsError.new 
+      end
     end
   end
 end

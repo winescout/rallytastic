@@ -8,4 +8,10 @@ Spec::Runner.configure do |config|
   
 end
 
-MongoMapper.database = 'rallytastic_test'
+
+Mongoid.configure do |config|
+  name = "rallytastic_test"
+  host = "localhost"
+  config.master = Mongo::Connection.new.db(name)
+  config.persist_in_safe_mode = false
+end

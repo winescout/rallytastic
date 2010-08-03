@@ -6,28 +6,6 @@ describe Iteration do
     hash_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'iteration.txt'))
     RallyAPI.stub!(:get).and_return(eval(hash_vals))
   end
-
-
-  describe "stories" do
-    before do 
-      Iteration.collection.remove
-      Story.collection.remove
-      story_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story.txt'))
-      RallyAPI.stub!(:get).and_return(eval(story_vals))
-      @iteration = Iteration.new(:rally_id => "462353428")
-      query_vals = File.read(File.join(File.dirname(__FILE__), 'fixtures', 'story_query.txt'))
-      RallyAPI.stub!(:query).and_return(eval(query_vals))
-    end
-    
-    it "should have list of stories" do 
-      @iteration.stories.should_not be_nil
-    end    
-    
-    it "should refresh stories" do 
-      @iteration.refresh_stories
-      @iteration.stories.size.should > 0
-    end
-  end
   
 
   it "should be a iteration" do 
@@ -37,7 +15,7 @@ describe Iteration do
 
   describe "refreshing" do 
     before do 
-      @iteration = Iteration.new(:rally_id => "462353428")
+      @iteration = Iteration.new(:rally_uri => "http://testuri.com")
     end
     it "should assign name" do 
       @iteration.refresh
@@ -59,18 +37,9 @@ describe Iteration do
         @iteration.name.should == "Iteration1"
     end
 
-    it "should assign project_uri" do 
-      @iteration.refresh
-      @iteration.project_uri.should == "https://rally1.rallydev.com/slm/webservice/1.19/project/440864397.js"
-    end
     it "should assign resources"  do 
       @iteration.refresh
       @iteration.resources.should == "2.0"
-    end
-
-    it "should assign revision_history" do 
-      @iteration.refresh
-      @iteration.revision_uri.should_not be_empty
     end
 
     it "should assign start_date" do 
