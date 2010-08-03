@@ -16,7 +16,10 @@ class Project
   field :notes
   field :state
 
-  #TODO: extend MM key method to do this mapping
+  referenced_in :parent, :class_name => "Project"
+  references_many :children, :class_name => "Project"
+  references_many :iterations  
+
   def refresh
     from_rally :name
     from_rally :description

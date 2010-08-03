@@ -19,7 +19,9 @@ class Iteration
   field :end_date, :type => Date
   field :resources
   field :theme
-
+  
+  referenced_in :project
+  references_many :stories
 
   def refresh
     from_rally :rally_uri, :_ref

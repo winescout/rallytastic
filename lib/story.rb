@@ -26,6 +26,8 @@ class Story
   field :theme
   field :rally_hash, :type => Hash
 
+  referenced_in :iteration
+  references_many :children, :class_name => "Story"
 
   def refresh
     from_rally :rally_uri, :_ref
