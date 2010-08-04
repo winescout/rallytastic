@@ -35,6 +35,19 @@ You should also set mongo to use a testing database in spec/spec_helper.rb
 
 ==Usage
 
+=== Populating your MongoDB for the first time
+  > bundle exec thor scraper:projects
+  > bundle exec thor scraper:iterations
+  > bundle exec thor scraper:refresh
+
+=== Revisions are pulled on request per iteration
+  > bundle exec thor scraper:revisions "Iteration Name"
+
+=== On an ongoing basis, updating stories is quicker
+  > bundle exec thor scraper:refresh
+  # update the story revisions for the iteration you are interested in
+  > bundle exec thor scraper:revisions "Iteration Name"
+
 === Thor Tasks
 ==== scraper:help [TASK]
 # Describe available tasks or one specific task
