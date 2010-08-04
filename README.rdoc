@@ -9,15 +9,13 @@ Rallytastic is intended to be the foundation of a web app that reports User Stor
 
 == Congiguration
 
-In a file that is read at loadtime setup your username and password
+In a file that is required from lib/rallytastic.rb, you can configure Rally authentication.
   RallyAPI::configure do |config|
     config.user = "username@AwesomeCompany.com"
     config.password = "password"
   end
 
-You also need to have Mongo running, and let your app know what database to use
-
-Put something like this in a config file, or use the Rails .yml way
+You also need to have Mongo running, and let your app know what database to use.  Either do it the Rails .yml way, or put something like this in a config file and include it:
   Mongoid.configure do |config|
     name = "rallytastic_dev"
     host = "localhost"
@@ -36,6 +34,7 @@ You should also set mongo to use a testing database in spec/spec_helper.rb
 
 
 ==Usage
+
 
 * order to pull rally objects:
   - users
