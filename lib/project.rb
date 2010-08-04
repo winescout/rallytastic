@@ -16,6 +16,8 @@ class Project
   field :notes
   field :state
 
+  field :revision_parser
+
   referenced_in :parent, :class_name => "Project"
   references_many :children, :class_name => "Project"
   references_many :iterations  
@@ -30,11 +32,12 @@ class Project
     self.save
 
   end
-
+  
+  #must be called after refresh, or with has_values passed in
   def associate hash_values=nil
     @rally_hash = hash_values if hash_values
     #TODO: associate with user when users are supported
-    if @rally_hash.has_key?("Parent")
+    if @rally_hash["Parent"]
       parent = Project.find_or_create_by(:rally_uri => @rally_hash["Parent"]["_ref"])
       self.parent = parent
     end

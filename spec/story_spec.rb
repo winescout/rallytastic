@@ -47,8 +47,8 @@ describe Story do
       @story.formatted_id.should == "US26"
     end
 
-    it "should set last_updated_on" do 
-      @story.last_updated_on.should == Date.parse("2009-09-10T18:57:55.000Z")
+    it "should set updated_on" do 
+      @story.updated_on.should == Date.parse("2009-09-10T18:57:55.000Z")
     end
 
     it "should set accepted_date" do 

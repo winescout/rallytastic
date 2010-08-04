@@ -40,6 +40,7 @@ class Iteration
     self.save # save what you can
   end
 
+  #has to be called after refresh, or with hash_values passed in
   def associate hash_values=nil
     @rally_hash = hash_values if hash_values
     if @rally_hash.has_key?("Project")

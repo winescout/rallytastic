@@ -24,7 +24,8 @@ class RallyAPI
 
     def get resource     
       check_configuration 
-      JSON.parse(do_get(resource.rally_uri))[resource.class.to_s]    
+      json = JSON.parse(do_get(resource.rally_uri))
+      json[resource.class.node_name]    
     end
     
     def parsed_options options
@@ -72,20 +73,21 @@ class RallyAPI
         "lte" => "<=",
         "ne" => "!="}
       field = k.respond_to?("key") ? k.key : k
+      field = field.downcase == field ? field.capitalize : field
       operator = k.respond_to?("operator") ? operators[k.operator] : "="
-      "(#{field.capitalize} #{operator} \"#{v}\")"
+      "(#{field.to_s} #{operator} \"#{v}\")"
     end
 
-    def do_get uri, options = nil
-      if options
-        rally_resource[uri].get(:params => options)
+    def do_get endpoint, options = nil
+      if endpoint.match(/https:\/\/.*/)
+        rally_resource(endpoint).get(:params => options)
       else
-        rally_resource[uri].get
+        rally_resource[endpoint].get(:params => options)
       end
     end
 
-    def rally_resource
-      uri = "https://rally1.rallydev.com/slm/webservice/1.19"
+    def rally_resource uri = nil
+      uri ||= "https://rally1.rallydev.com/slm/webservice/1.19"
       RestClient::Resource.new(uri, 
                                :user => self.configuration.user, 
                                :password => self.configuration.password)

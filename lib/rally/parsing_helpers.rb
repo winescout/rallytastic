@@ -1,5 +1,13 @@
 module Rally
   module ParsingHelperClassMethods
+    def node_name
+      if self.to_s == "Story"
+        "HierarchicalRequirement"
+      else
+        self.to_s
+      end
+    end
+
     def from_uri(uri)
       obj = first(:conditions => {:rally_uri => uri}) || new(:rally_uri => uri)
       obj.refresh
