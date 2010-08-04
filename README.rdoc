@@ -1,4 +1,11 @@
 = rallytastic
+== Description
+
+Do you use Rally?  Every day?  Do you use it enough that you've run out of ways to hack the site to get that last ounce of customization from it?  The reports, for example, while very good, aren't quite what you need to run your dev shop, are they?  If you've taken a look at the RallyAPI longingly in the past, but written it off as too much work to do anything meaningful with, then Rallytastic is offering you a helping hand.
+
+Rallytastic is a set of objects built on MongoDB and Mongoid, along with Thor tasks that pull data out of Rally and stuff it into those objects.  Once there, Rallytastic tries to get out of your way and lets the data be your playground.  Have at it with a platic shovel and Tonka Bulldozer if that'll get you up in the morning. You were born to get down with your bad Rally self.  Be Awesome. 
+
+Rallytastic is intended to be the foundation of a web app that reports User Story data back to Rally users.  It augments Rally proper primarily as an extention to the reporting capabilities.  For example, if you are more concerned with the throughput of your dev teams than their velocity, Rallytastic is going to help you build custom fit measuring tools for that.  It has built in helpers to walk through the revision logs of your stories and identify key events in their lifecycle.  You can track work in progress(WIP) levels over time, measure how long stories sit prioritized on your backlog before dev starts,  identify queues and bottlenecks anywhere between story definition time and release, and much more.
 
 == Congiguration
 
