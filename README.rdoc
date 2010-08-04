@@ -66,7 +66,9 @@ You should also set mongo to use a testing database in spec/spec_helper.rb
 <End of Thor Tasks>
 
 == TODO
-
+* Add Releases
+* Taging stories
+* Reporting engine
 
 == Note on Patches/Pull Requests
  
