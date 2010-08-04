@@ -35,16 +35,23 @@ You should also set mongo to use a testing database in spec/spec_helper.rb
 
 ==Usage
 
+=== Thor Tasks
+==== scraper:help [TASK]
+# Describe available tasks or one specific task
+==== scraper:refresh
+# Pulls down Rally stories since the last run, and creates Iterations and Projects as needed. This is the task you want to put in your job scheduler.
+==== scraper:stories
+# Walk Rally stories updated since last run
+==== scraper:update_non_stories
+# The scrape:stroies task creates shell iterations and projects for any that it doesn't know about yet. This task looks for those, and pull their information down from Rally
+==== scraper:revisions iteration_name
+# Get the revisions for stories hanging off an iteration
+==== scraper:projects
+# Bootstrapping method that is primarily useful when you are setting up Rallytastic for the first time. It will walk Rally and pull down all projects. Technically, you don't need to run this because using the scrape:stories; scrape:update_non_stories; will fill this information in for you. It may be a bit quicker though to run this first if you have a lot of projects because it does batch queries
+==== scraper:iterations
+# Bootstrapping method that is primarily useful when you are setting up Rallytastic for the first time. It will walk Rally and pull down all Iterations. Technically, you don't need to run this because using the scrape:stories; scrape:update_non_stories; will fill this information in for you. It may be a bit quicker though to run this first if you have a lot of iterations because it does batch queries
+<End of Thor Tasks>
 
-* order to pull rally objects:
-  - users
-  - releases
-  - tasks
-  - defects
-  - test cases
-  - projects
-  - iterations
-  - stories
 == TODO
 
 
