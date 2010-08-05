@@ -52,7 +52,7 @@ describe Story do
     end
 
     it "should set accepted_date" do 
-      @story.accepted_on.should == Date.parse("2009-09-10T18:57:55.000Z")
+      @story.accepted_on.should == DateTime.parse("2009-09-10T18:57:55.000Z")
     end
 
     it "should set blocked" do
