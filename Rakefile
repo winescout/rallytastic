@@ -6,7 +6,7 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "rallytastic"
     gem.summary = %Q{Its a Rally story teleporter}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.description = %Q{longer description of your gem}
     gem.email = "winescout@gmail.com"
     gem.homepage = "http://github.com/winescout/rallytastic"
     gem.authors = ["Matt Clark"]
