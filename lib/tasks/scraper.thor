@@ -56,6 +56,7 @@ class Scraper < Thor
         end
       end
     end
+    story.set_revision_history
     story.save
   end
 

@@ -15,9 +15,5 @@ module Parser
     def completed_on
       last_revision_date_matching /SCHEDULE STATE changed from \[[^\]]*\] to [Complete]/
     end
-
-    def accepted_on
-      last_revision_date_matching /SCHEDULE STATE changed from \[[^\]]*\] to [Accepted]/
-    end    
   end
 end

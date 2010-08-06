@@ -16,7 +16,7 @@ class Story
   field :description
   field :notes
   field :formatted_id
-  field :accepted_on, :type => Date
+  field :accepted_on, :type => DateTime
   field :blocked, :type => Boolean
   field :plan_estimate, :type => Integer
   field :predicessor_uris, :type => Array
@@ -31,7 +31,6 @@ class Story
   field :prioritized_on, :type => DateTime
   field :started_on,     :type => DateTime
   field :completed_on,   :type => DateTime
-  field :accepted_on,    :type => DateTime
 
   embeds_many :revisions, :inverse_of => :story
   referenced_in :iteration
@@ -50,7 +49,7 @@ class Story
   end
      
   def revision_fields
-    [:sized_on, :prioritized_on, :started_on, :completed_on, :accepted_on]
+    [:sized_on, :prioritized_on, :started_on, :completed_on]
   end
   
   def revision_parser

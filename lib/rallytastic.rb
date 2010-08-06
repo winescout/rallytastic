@@ -27,4 +27,4 @@ require File.join(lib, 'parsers/madison.rb')
 
 
 #temp for rally and mongoid setup
-require '~/rally_config'
+#require '~/rally_config'
