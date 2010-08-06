@@ -11,6 +11,11 @@ begin
     gem.homepage = "http://github.com/winescout/rallytastic"
     gem.authors = ["Matt Clark"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
+    gem.add_dependency "rake"
+    gem.add_dependency "mongoid"
+    gem.add_dependency "bson_ext"
+    gem.add_dependency "rest-client"
+    gem.add_dependency "thor"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
