@@ -57,6 +57,25 @@ class Story
       eval("Parser::#{self.iteration.project.revision_parser}").new(self)
     end
   end
+
+
+  def pull_revisions
+    revision_list = RevisionHistory.new(:rally_uri => self.revision_history_uri)
+    revision_list.refresh
+    revision_uris = story.revisions.collect{|r| r.rally_uri}
+    if revision_list.revisions
+      revision_list.revisions.each do |uri|
+        unless revision_uris.include?(uri)
+          r = Revision.new(:rally_uri => uri)
+          r.refresh
+          self.revisions << r
+        end
+      end
+    end
+    self.set_revision_history
+    self.save
+  end
+
   
   def refresh hash_values=nil
     @rally_hash = hash_values

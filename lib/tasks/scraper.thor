@@ -28,7 +28,7 @@ class Scraper < Thor
   desc "revisions iteration_name", "Get the revisions for stories hanging off an iteration"
   def revisions iteration_name
     iteration = Iteration.find(:conditions => {:name => iteration_name}).first
-    iteration.stories.each{|story| revisions_for_story(story)}
+    iteration.stories.each{|story| story.pull_revisions}
   end
   
   desc "projects", "Bootstrapping method that is primarily useful when you are setting up Rallytastic for the first time. It will walk Rally and pull down all projects.  Technically, you don't need to run this because using the scrape:stories; scrape:update_non_stories; will fill this information in for you.  It may be a bit quicker though to run this first if you have a lot of projects because it does batch queries"
@@ -42,23 +42,6 @@ class Scraper < Thor
   end
 
   private
-  def revisions_for_story(story)
-    story_in_rally = RallyAPI.get(story)
-    revision_list = RevisionHistory.new(:rally_uri => story_in_rally["RevisionHistory"]["_ref"])
-    revision_list.refresh
-    revision_uris = story.revisions.collect{|r| r.rally_uri}
-    if revision_list.revisions
-      revision_list.revisions.each do |uri|
-        unless revision_uris.include?(uri)
-          r = Revision.new(:rally_uri => uri)
-          r.refresh
-          story.revisions << r
-        end
-      end
-    end
-    story.set_revision_history
-    story.save
-  end
 
   def pull_all_from_rally_of_object  klass, options={}
     total, page_size, start_index = nil, 100, 1
