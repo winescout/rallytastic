@@ -9,7 +9,6 @@ module Parser
       @story.revisions
     end
 
-    protected
     def latest_revision_date_matching regexp
       revision = revisions.desc(:created_on).select{|r| r.description =~ regexp}.first
       revision.created_on if revision
