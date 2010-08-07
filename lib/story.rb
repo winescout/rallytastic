@@ -62,7 +62,7 @@ class Story
   def pull_revisions
     revision_list = RevisionHistory.new(:rally_uri => self.revision_history_uri)
     revision_list.refresh
-    revision_uris = story.revisions.collect{|r| r.rally_uri}
+    revision_uris = self.revisions.collect{|r| r.rally_uri}
     if revision_list.revisions
       revision_list.revisions.each do |uri|
         unless revision_uris.include?(uri)
