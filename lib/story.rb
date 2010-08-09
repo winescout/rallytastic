@@ -33,46 +33,46 @@ class Story
   field :completed_on,   :type => DateTime
 
   embeds_many :revisions, :inverse_of => :story
+  embeds_one :revision_parser, :inverse_of => :story
   referenced_in :iteration
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
   references_many :children, :class_name => "Story", :inverse_of => :parent
   
-  def set_revision_history
-    revision_fields.each do |field|
-      self.send("#{field}=", revision_parser.send(field))
-    end
-  end
-  
-  def revision_history
-    set_revision_history
-    revision_fields.inject({}){|h,field| h[field] = self.send(field.to_s); h}
-  end
-     
   def revision_fields
     [:sized_on, :prioritized_on, :started_on, :completed_on]
   end
+
+  def parse_revisions_for_status_changes
+    revision_fields.each do |field|
+      timestamp = revision_parser.send(field, revisions)
+      self.send("#{field}=", timestamp)
+    end
+  end
   
+  def status_changes
+    set_revision_history
+    revision_fields.inject({}){|h,field| h[field] = self.send(field.to_s); h}
+  end
+       
   def revision_parser
     if self.iteration && self.iteration.project
-      eval("Parser::#{self.iteration.project.revision_parser}").new(self)
+      self.iteration.project.revision_parser
     end
   end
 
 
   def pull_revisions
-    revision_list = RevisionHistory.new(:rally_uri => self.revision_history_uri)
-    revision_list.refresh
+    revision_history.refresh
     revision_uris = self.revisions.collect{|r| r.rally_uri}
-    if revision_list.revisions
-      revision_list.revisions.each do |uri|
-        unless revision_uris.include?(uri)
-          r = Revision.new(:rally_uri => uri)
-          r.refresh
-          self.revisions << r
+    if revision_history.revisions
+      revision_history.revisions.each do |rally_revision|
+        unless revision_uris.include?(rally_revision.rally_uri)
+          rally_revision.refresh
+          self.revisions << rally_revision
         end
       end
     end
-    self.set_revision_history
+    self.parse_revisions_for_status_changes
     self.save
   end
 
@@ -115,5 +115,10 @@ class Story
     end
 
     self.save
+  end
+
+  private
+  def revision_history
+    RevisionHistory.new(:rally_uri => self.revision_history_uri)
   end
 end

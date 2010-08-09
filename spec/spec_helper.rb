@@ -3,9 +3,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'rallytastic'
 require 'spec'
 require 'spec/autorun'
+require 'fabrication'
 
-Spec::Runner.configure do |config|
-  
+Spec::Runner.configure do |config|  
 end
 
 
@@ -15,3 +15,4 @@ Mongoid.configure do |config|
   config.master = Mongo::Connection.new.db(name)
   config.persist_in_safe_mode = false
 end
+

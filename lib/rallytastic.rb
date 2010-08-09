@@ -21,9 +21,9 @@ require File.join(lib, 'project.rb')
 require File.join(lib, 'iteration.rb')
 require File.join(lib, 'revision_history.rb')
 require File.join(lib, 'revision.rb')
+require File.join(lib, 'revision_parser.rb')
 require File.join(lib, 'rally/rally_api.rb')
 require File.join(lib, 'parsers/base.rb')
-require File.join(lib, 'parsers/madison.rb')
 
 
 #temp for rally and mongoid setup

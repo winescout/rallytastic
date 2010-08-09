@@ -3,7 +3,7 @@ class RevisionHistory
   include Rally::ParsingHelpers
   extend Rally::ParsingHelperClassMethods
   
-  field :revisions, :type => Array
+  field :revision_uris, :type => Array
 
   class << self
     def rally_uri
@@ -12,8 +12,7 @@ class RevisionHistory
   end
 
   def refresh
-    parse_refs :revisions, raw_json["Revisions"]
+    parse_refs :revision_uris, raw_json["Revisions"]
     self.save
   end
-
 end

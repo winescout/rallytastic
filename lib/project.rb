@@ -16,12 +16,11 @@ class Project
   field :notes
   field :state
 
-  field :revision_parser
-
   referenced_in :parent, :class_name => "Project"
   references_many :children, :class_name => "Project"
   references_many :iterations  
-
+  embeds_one :revision_parser
+  
   def refresh hash_values=nil
     @rally_hash = hash_values if hash_values
     from_rally :name

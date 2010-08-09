@@ -79,4 +79,26 @@ describe Story do
       @story.theme.should == "this is the theme"
     end
   end
+
+  describe "#revision_parser" do 
+    before do 
+      @story = Fabricate(:story)
+    end
+
+    it "should return new parser" do 
+      @story.revision_parser.class.should == RevisionParser
+    end
+  end
+
+  describe "#pull_revisions" do 
+    before do
+      @story = Fabricate(:story)
+    end
+
+    it "should pull revisions from revision history" do 
+      @story.revisions.count.should == 0
+      @story.pull_revisions
+      @story.revisions.count.should == 2
+    end
+  end
 end

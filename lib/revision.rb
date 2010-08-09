@@ -6,6 +6,7 @@ class Revision
   field :description
   field :revision_number
   field :created_on
+  field :rally_uri
 
   embedded_in :story, :inverse_of => :revisions
 

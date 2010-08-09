@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/winescout/fabrication.git
+  revision: 51d9cdf
+  specs:
+    fabrication (0.6.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -17,7 +23,7 @@ GEM
       gemcutter (>= 0.1.0)
       git (>= 1.2.5)
       rubyforge (>= 2.0.0)
-    json_pure (1.4.3)
+    json_pure (1.4.5)
     mime-types (1.16)
     mongo (1.0.6)
       bson (>= 1.0.4)
@@ -43,6 +49,7 @@ PLATFORMS
 DEPENDENCIES
   autotest
   bson_ext
+  fabrication!
   jeweler
   mongoid (= 2.0.0.beta.15)
   rake
