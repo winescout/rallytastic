@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rallytastic}
-  s.version = "1.2.0"
+  s.version = "1.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Clark"]
@@ -26,7 +26,6 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/iteration.rb",
-     "lib/parsers/base.rb",
      "lib/project.rb",
      "lib/rally/parsing_helpers.rb",
      "lib/rally/rally_api.rb",
@@ -52,6 +51,7 @@ Gem::Specification.new do |s|
      "spec/iteration_spec.rb",
      "spec/project_spec.rb",
      "spec/rally/rally_api_spec.rb",
+     "spec/revision_history_spec.rb",
      "spec/revision_parser_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
@@ -72,6 +72,7 @@ Gem::Specification.new do |s|
      "spec/iteration_spec.rb",
      "spec/project_spec.rb",
      "spec/rally/rally_api_spec.rb",
+     "spec/revision_history_spec.rb",
      "spec/revision_parser_spec.rb",
      "spec/spec_helper.rb",
      "spec/story_spec.rb"
