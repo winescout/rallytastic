@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rallytastic}
-  s.version = "1.1.2"
+  s.version = "1.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Clark"]
-  s.date = %q{2010-08-06}
+  s.date = %q{2010-08-08}
   s.description = %q{longer description of your gem}
   s.email = %q{winescout@gmail.com}
   s.extra_rdoc_files = [
@@ -27,16 +27,23 @@ Gem::Specification.new do |s|
      "VERSION",
      "lib/iteration.rb",
      "lib/parsers/base.rb",
-     "lib/parsers/madison.rb",
      "lib/project.rb",
      "lib/rally/parsing_helpers.rb",
      "lib/rally/rally_api.rb",
      "lib/rallytastic.rb",
      "lib/revision.rb",
      "lib/revision_history.rb",
+     "lib/revision_parser.rb",
      "lib/story.rb",
      "lib/tasks/docs.thor",
      "lib/tasks/scraper.thor",
+     "rallytastic.gemspec",
+     "spec/fabricators/iteration.rb",
+     "spec/fabricators/project.rb",
+     "spec/fabricators/revision.rb",
+     "spec/fabricators/revision_history.rb",
+     "spec/fabricators/revision_parser.rb",
+     "spec/fabricators/story.rb",
      "spec/fixtures/child_project.txt",
      "spec/fixtures/iteration.txt",
      "spec/fixtures/project.txt",
@@ -45,6 +52,7 @@ Gem::Specification.new do |s|
      "spec/iteration_spec.rb",
      "spec/project_spec.rb",
      "spec/rally/rally_api_spec.rb",
+     "spec/revision_parser_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb",
      "spec/story_spec.rb"
@@ -55,9 +63,16 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Its a Rally story teleporter}
   s.test_files = [
-    "spec/iteration_spec.rb",
+    "spec/fabricators/iteration.rb",
+     "spec/fabricators/project.rb",
+     "spec/fabricators/revision.rb",
+     "spec/fabricators/revision_history.rb",
+     "spec/fabricators/revision_parser.rb",
+     "spec/fabricators/story.rb",
+     "spec/iteration_spec.rb",
      "spec/project_spec.rb",
      "spec/rally/rally_api_spec.rb",
+     "spec/revision_parser_spec.rb",
      "spec/spec_helper.rb",
      "spec/story_spec.rb"
   ]
