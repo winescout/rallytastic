@@ -1,7 +1,7 @@
 Fabricator(:story) do 
   name "Factory Story"
   iteration {Fabricate(:iteration)}
-  revision_history(:force => true){Fabricate.build(:revision_history)}
+  revision_history(:force => true){Fabricate.build(:revision_history_mocked_revisions)}
 end
 
 Fabricator(:story_with_revisions, :from => :story) do 

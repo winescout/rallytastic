@@ -15,4 +15,10 @@ class RevisionHistory
     parse_refs :revision_uris, raw_json["Revisions"]
     self.save
   end
+  
+  def revisions
+    revision_uris.collect do |uri|
+      Revision.new(:rally_uri => uri)
+    end
+  end
 end
