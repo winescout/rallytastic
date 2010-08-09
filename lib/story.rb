@@ -33,7 +33,6 @@ class Story
   field :completed_on,   :type => DateTime
 
   embeds_many :revisions, :inverse_of => :story
-  embeds_one :revision_parser, :inverse_of => :story
   referenced_in :iteration
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
   references_many :children, :class_name => "Story", :inverse_of => :parent
