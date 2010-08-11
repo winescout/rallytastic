@@ -17,7 +17,7 @@ class RevisionHistory
   end
   
   def revisions
-    revision_uris ||= []
+    self.revision_uris ||= []
     revision_uris.collect do |uri|
       Revision.new(:rally_uri => uri)
     end

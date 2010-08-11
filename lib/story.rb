@@ -116,8 +116,8 @@ class Story
     self.save
   end
 
-  private
+
   def revision_history
-    RevisionHistory.new(:rally_uri => self.revision_history_uri)
+    RevisionHistory.find_or_create_by(:rally_uri => self.revision_history_uri)
   end
 end
