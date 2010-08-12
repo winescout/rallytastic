@@ -32,6 +32,9 @@ class Story
   field :started_on,     :type => DateTime
   field :completed_on,   :type => DateTime
 
+  field :accepted_points
+  field :unaccepted_points
+
   embeds_many :revisions, :inverse_of => :story
   referenced_in :iteration
   referenced_in :project
@@ -46,6 +49,26 @@ class Story
     end
   end
 
+  def refresh_points
+    if self.children.empty?
+      if self.accepted_on
+        points = {:accepted => self.plan_estimate || 0, :unaccepted => 0}
+      else
+        points = {:unaccepted => self.plan_estimate || 0, :accepted => 0}
+      end
+    else
+      points = self.children.inject({:accepted => 0, :unaccepted => 0}) do |sums,child| 
+        child_points = child.refresh_points
+        sums[:accepted] +=  child_points[:accepted]
+        sums[:unaccepted] += child_points[:unaccepted]
+        sums
+      end
+    end
+    self.accepted_points = points[:accepted]
+    self.unaccepted_points = points[:unaccepted]
+    self.save
+    return points
+  end
   
   def revision_fields
     [:sized_on, :prioritized_on, :started_on, :completed_on]
@@ -104,7 +127,7 @@ class Story
     from_rally :theme
     
     parse_ref :revision_history_uri, @rally_hash["RevisionHistory"]
-
+    self.refresh_points
     self.save
   rescue ArgumentError #getting some bad created_on dates
     puts "Errored on #{self.name}"
