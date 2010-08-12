@@ -26,7 +26,6 @@ class RevisionParser
   end
 
   def completed_on(revisions)
-    #regex = completed_on_regex ? eval(completed_on_regex) : /SCHEDULE STATE changed from \[[^\]]*\] to [Complete]/
     regex = completed_on_regex ? eval(completed_on_regex) : /SCHEDULE STATE changed from \[[^\]]*\] to \[Complete\]/
     latest_revision_date_matching regex, revisions
   end

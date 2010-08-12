@@ -19,6 +19,7 @@ class Project
   referenced_in :parent, :class_name => "Project"
   references_many :children, :class_name => "Project"
   references_many :iterations  
+  references_many :stories
   embeds_one :revision_parser
   
   def refresh hash_values=nil

@@ -34,6 +34,7 @@ class Story
 
   embeds_many :revisions, :inverse_of => :story
   referenced_in :iteration
+  referenced_in :project
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
   references_many :children, :class_name => "Story", :inverse_of => :parent
   
@@ -54,8 +55,8 @@ class Story
   end
        
   def revision_parser
-    if self.iteration && self.iteration.project
-      self.iteration.project.revision_parser
+    if self.project
+      self.project.revision_parser
     end
   end
 
@@ -102,18 +103,29 @@ class Story
   end
 
   def associate hash_values=nil
-    @rally_hash = hash_values if hash_values
-    if @rally_hash["Iteration"]
-      iteration = Iteration.find_or_create_by(:rally_uri => @rally_hash["Iteration"]["_ref"])
-      self.iteration = iteration
-    end
-    
-    if @rally_hash["Parent"]
-      story = Story.find_or_create_by(:rally_uri => @rally_hash["Parent"]["_ref"])
-      self.parent = story
-    end
+    @rally_hash = hash_values || RallyAPI.get(self)
+    if @rally_hash
+      if @rally_hash["Project"]
+        project = Project.find_or_create_by(:rally_uri => @rally_hash["Project"]["_ref"])
+        self.project = project
+      end
 
-    self.save
+      if @rally_hash["Iteration"]
+        iteration = Iteration.find_or_create_by(:rally_uri => @rally_hash["Iteration"]["_ref"])
+        self.iteration = iteration
+      end
+      
+      if @rally_hash["Parent"]
+        story = Story.find_or_create_by(:rally_uri => @rally_hash["Parent"]["_ref"])
+        self.parent = story
+        story.children << self
+        story.save
+      end
+      
+      self.save
+    end
+  rescue JSON::ParserError => e
+    p e
   end
 
 
