@@ -37,6 +37,15 @@ class Story
   referenced_in :project
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
   references_many :children, :class_name => "Story", :inverse_of => :parent
+
+  def epic
+    if self.parent
+      return parent.epic
+    else
+      return self
+    end
+  end
+
   
   def revision_fields
     [:sized_on, :prioritized_on, :started_on, :completed_on]
@@ -82,7 +91,7 @@ class Story
     from_rally :rally_uri, :_ref
     from_rally :name
     from_rally :notes
-    from_rally :created_on, :_CreatedAt
+    from_rally :created_on, :CreationDate
     from_rally :description
     from_rally :formatted_id, :FormattedID
     from_rally :updated_on, :LastUpdateDate
@@ -99,6 +108,7 @@ class Story
     self.save
   rescue ArgumentError #getting some bad created_on dates
     puts "Errored on #{self.name}"
+    p self
     self.save # save what you can
   end
 
