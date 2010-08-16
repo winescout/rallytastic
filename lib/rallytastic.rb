@@ -26,4 +26,4 @@ require File.join(lib, 'rally/rally_api.rb')
 
 
 #temp for rally and mongoid setup
-require '~/rally_config'
+#require '~/rally_config'

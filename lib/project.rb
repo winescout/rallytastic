@@ -35,10 +35,12 @@ class Project
   
   #must be called after refresh, or with has_values passed in
   def associate hash_values=nil
-    @rally_hash = hash_values if hash_values
+    @rally_hash = hash_values || RallyAPI.get(self)
     #TODO: associate with user when users are supported
     if @rally_hash["Parent"]
       parent = Project.find_or_create_by(:rally_uri => @rally_hash["Parent"]["_ref"])
+      parent.children << self
+      parent.save
       self.parent = parent
     end
     self.save
