@@ -22,7 +22,7 @@ class Scraper < Thor
   desc "update_non_stories", "The scrape:stroies task creates shell iterations and projects for any that it doesn't know about yet.  This task looks for those, and pull their information down from Rally"
   def update_non_stories
     Iteration.all(:conditions => {:name => nil, :rally_uri.ne => nil}).each{|i| i.refresh; i.associate}
-    Project.all(:conditions => {:name => nil, :rally_uri.ne => nil}).each{|s| s.refresh; i.associate}
+    Project.all(:conditions => {:name => nil, :rally_uri.ne => nil}).each{|s| s.refresh; s.associate}
   end
 
   desc "revisions iteration_name", "Get the revisions for stories hanging off an iteration"

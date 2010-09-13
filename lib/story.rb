@@ -26,7 +26,7 @@ class Story
   field :theme
   field :revision_history_uri
   field :rally_hash, :type => Hash
-
+  field :is_mmf, :type => Boolean
   field :sized_on,       :type => DateTime
   field :prioritized_on, :type => DateTime
   field :started_on,     :type => DateTime
@@ -114,6 +114,7 @@ class Story
     from_rally :rally_uri, :_ref
     from_rally :name
     from_rally :notes
+    from_rally :is_mmf, :IsMMF
     from_rally :created_on, :CreationDate
     from_rally :description
     from_rally :formatted_id, :FormattedID
@@ -125,7 +126,7 @@ class Story
     from_rally :schedule_state, :ScheduleState
     from_rally :requested_due_date, :RequestedDueDate
     from_rally :theme
-    
+    p @rally_hash
     parse_ref :revision_history_uri, @rally_hash["RevisionHistory"]
     self.refresh_points
     self.save
