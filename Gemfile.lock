@@ -23,7 +23,7 @@ GEM
       gemcutter (>= 0.1.0)
       git (>= 1.2.5)
       rubyforge (>= 2.0.0)
-    json_pure (1.4.5)
+    json_pure (1.4.6)
     mime-types (1.16)
     mongo (1.0.6)
       bson (>= 1.0.4)
