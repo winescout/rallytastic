@@ -158,7 +158,6 @@ class Story
     from_rally :cycle_time, :DevCycleTime
     from_rally :deploy_cycle_time, :DeployCycleTime
     from_rally :theme
-    p @rally_hash
     parse_ref :revision_history_uri, @rally_hash["RevisionHistory"]
     self.refresh_points
     self.save
