@@ -7,6 +7,22 @@ class Story
     def rally_uri
       "/hierarchicalrequirement.js"
     end
+    
+    def mmf
+      criteria.where(:is_mmf => true)
+    end
+
+    def in_progress
+      criteria.where(:schedule_state => "In-Progress")
+    end
+
+    def accepted
+      criteria.where(:schedule_state => "Accepted")
+    end
+
+    def next
+      criteria.where(:schedule_state => "Backlog")
+    end
   end
 
   field :name
@@ -15,6 +31,8 @@ class Story
   field :updated_on, :type => Date
   field :description
   field :notes
+  field :initiative
+  field :size
   field :formatted_id
   field :accepted_on, :type => DateTime
   field :blocked, :type => Boolean
@@ -26,11 +44,13 @@ class Story
   field :theme
   field :revision_history_uri
   field :rally_hash, :type => Hash
-
+  field :is_mmf, :type => Boolean
   field :sized_on,       :type => DateTime
   field :prioritized_on, :type => DateTime
   field :started_on,     :type => DateTime
   field :completed_on,   :type => DateTime
+  field :cycle_time
+  field :deploy_cycle_time
 
   field :accepted_points
   field :unaccepted_points
@@ -40,6 +60,15 @@ class Story
   referenced_in :project
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
   references_many :children, :class_name => "Story", :inverse_of => :parent
+
+  def actionable_children
+    children = self.children
+    if children.size > 0
+      children.collect{|s| s.actionable_children}
+    else
+      [self]
+    end
+  end
 
   def epic
     if self.parent
@@ -114,6 +143,7 @@ class Story
     from_rally :rally_uri, :_ref
     from_rally :name
     from_rally :notes
+    from_rally :is_mmf, :IsMMF
     from_rally :created_on, :CreationDate
     from_rally :description
     from_rally :formatted_id, :FormattedID
@@ -122,10 +152,13 @@ class Story
     from_rally :blocked
     from_rally :plan_estimate, :PlanEstimate
     from_rally :rank
+    from_rally :size 
     from_rally :schedule_state, :ScheduleState
     from_rally :requested_due_date, :RequestedDueDate
+    from_rally :cycle_time, :DevCycleTime
+    from_rally :deploy_cycle_time, :DeployCycleTime
     from_rally :theme
-    
+    p @rally_hash
     parse_ref :revision_history_uri, @rally_hash["RevisionHistory"]
     self.refresh_points
     self.save
