@@ -7,6 +7,22 @@ class Story
     def rally_uri
       "/hierarchicalrequirement.js"
     end
+    
+    def mmf
+      criteria.where(:is_mmf => true)
+    end
+
+    def in_progress
+      criteria.where(:schedule_state => "In-Progress")
+    end
+
+    def accepted
+      criteria.where(:schedule_state => "Accepted")
+    end
+
+    def next
+      criteria.where(:schedule_state => "Backlog")
+    end
   end
 
   field :name
