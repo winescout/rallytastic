@@ -40,6 +40,7 @@ class Story
   field :predicessor_uris, :type => Array
   field :rank
   field :schedule_state
+  field :requested_by
   field :requested_due_date, :type => Date
   field :theme
   field :revision_history_uri
@@ -157,6 +158,7 @@ class Story
     from_rally :size 
     from_rally :schedule_state, :ScheduleState
     from_rally :requested_due_date, :RequestedDueDate
+    from_rally :requested_by, :Requestor
     from_rally :cycle_time, :DevCycleTime
     from_rally :deploy_cycle_time, :DeployCycleTime
     from_rally :theme
