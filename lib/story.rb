@@ -40,6 +40,7 @@ class Story
   field :predicessor_uris, :type => Array
   field :rank
   field :schedule_state
+  field :requested_by
   field :requested_due_date, :type => Date
   field :theme
   field :revision_history_uri
@@ -55,7 +56,7 @@ class Story
   field :accepted_points
   field :unaccepted_points
 
-  embeds_many :revisions, :inverse_of => :story
+  embeds_many :revisions
   referenced_in :iteration
   referenced_in :project
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
@@ -63,11 +64,13 @@ class Story
 
   def actionable_children
     children = self.children
+    actionables= []
     if children.size > 0
-      children.collect{|s| s.actionable_children}
+      actionables << children.collect{|s| s.actionable_children}
     else
-      [self]
+      actionables = [self]
     end
+    actionables.flatten
   end
 
   def epic
@@ -155,6 +158,7 @@ class Story
     from_rally :size 
     from_rally :schedule_state, :ScheduleState
     from_rally :requested_due_date, :RequestedDueDate
+    from_rally :requested_by, :Requestor
     from_rally :cycle_time, :DevCycleTime
     from_rally :deploy_cycle_time, :DeployCycleTime
     from_rally :theme
@@ -193,6 +197,11 @@ class Story
     p e
   end
 
+  def update_parent
+    p self.parent.children.count
+    #self.parent.children << self
+    self.parent.save
+  end
 
   def revision_history
     RevisionHistory.find_or_create_by(:rally_uri => self.revision_history_uri)
