@@ -55,7 +55,7 @@ class Story
   field :accepted_points
   field :unaccepted_points
 
-  embeds_many :revisions, :inverse_of => :story
+  embeds_many :revisions
   referenced_in :iteration
   referenced_in :project
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
@@ -63,11 +63,13 @@ class Story
 
   def actionable_children
     children = self.children
+    actionables= []
     if children.size > 0
-      children.collect{|s| s.actionable_children}
+      actionables << children.collect{|s| s.actionable_children}
     else
-      [self]
+      actionables = [self]
     end
+    actionables.flatten
   end
 
   def epic
@@ -193,6 +195,11 @@ class Story
     p e
   end
 
+  def update_parent
+    p self.parent.children.count
+    #self.parent.children << self
+    self.parent.save
+  end
 
   def revision_history
     RevisionHistory.find_or_create_by(:rally_uri => self.revision_history_uri)
