@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{rallytastic}
-  s.version = "1.4.0"
+  s.version = "1.4.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Matt Clark"]
-  s.date = %q{2010-09-14}
+  s.date = %q{2010-09-17}
   s.description = %q{longer description of your gem}
   s.email = %q{winescout@gmail.com}
   s.extra_rdoc_files = [
