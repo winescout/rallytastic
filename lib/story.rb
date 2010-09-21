@@ -65,6 +65,15 @@ class Story
   def has_children?
     self.children.count > 0
   end
+  
+  def ancestors
+    if parent
+      a = parent.ancestors << self
+      return a
+    else
+      return [self]
+    end
+  end
 
   def actionable_children
     children = self.children
