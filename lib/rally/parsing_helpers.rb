@@ -51,7 +51,7 @@ module Rally
 
     #next 3 are for mapping from rally to mongo
     def from_rally attr, key=nil
-      key = key || attr.capitalize
+      key = key || attr.to_s.capitalize
       self.send("#{attr.to_s}=", raw_json[key.to_s])
     end
 
