@@ -61,6 +61,10 @@ class Story
   referenced_in :project
   referenced_in :parent, :class_name => "Story", :inverse_of => :children
   references_many :children, :class_name => "Story", :inverse_of => :parent
+  
+  def has_children?
+    self.children.count > 0
+  end
 
   def actionable_children
     children = self.children
