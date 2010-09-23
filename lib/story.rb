@@ -13,11 +13,11 @@ class Story
     end
 
     def in_progress
-      criteria.where(:schedule_state => "In-Progress")
+      criteria.where(:schedule_state.in => ["In-Progress", "Defined", "Completed"])
     end
 
     def accepted
-      criteria.where(:schedule_state => "Accepted")
+      criteria.where(:schedule_state.in => ["Accepted", "Released"])
     end
 
     def next
@@ -44,6 +44,7 @@ class Story
   field :requested_due_date, :type => Date
   field :theme
   field :revision_history_uri
+  field :revisions_last_pulled_on, :type => DateTime
   field :rally_hash, :type => Hash
   field :is_mmf, :type => Boolean
   field :sized_on,       :type => DateTime
@@ -120,9 +121,11 @@ class Story
   end
 
   def parse_revisions_for_status_changes
-    revision_fields.each do |field|
-      timestamp = revision_parser.send(field, revisions)
-      self.send("#{field}=", timestamp)
+    if revision_parser
+      revision_fields.each do |field|
+        timestamp = revision_parser.send(field, revisions)
+        self.send("#{field}=", timestamp)
+      end
     end
   end
   
