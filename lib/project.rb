@@ -16,11 +16,21 @@ class Project
   field :notes
   field :state
 
-  referenced_in :parent, :class_name => "Project"
-  references_many :children, :class_name => "Project"
+  referenced_in :parent, :class_name => "Project", :inverse_of => :children
+  references_many :children, :class_name => "Project", :inverse_of => :parent
   references_many :iterations  
   references_many :stories
   embeds_one :revision_parser
+
+  def ancestors
+    if parent
+      a = parent.ancestors << self
+      return a
+    else
+      return [self]
+    end
+  end
+
   
   def refresh hash_values=nil
     @rally_hash = hash_values if hash_values
