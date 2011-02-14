@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rake'
 gem 'jeweler'
-gem 'mongoid', '2.0.0.beta.18'
+gem 'mongoid', '2.0.0.rc.7'
 gem 'bson_ext'
 gem 'rest-client'
 gem 'thor'

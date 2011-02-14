@@ -74,6 +74,8 @@ class Story
     else
       return [self]
     end
+  rescue #if a parent story gets deleted somehow
+    return [self]
   end
 
   def actionable_children
