@@ -7,7 +7,7 @@ Rallytastic is a set of objects built on MongoDB and Mongoid, along with Thor ta
 
 Rallytastic is intended to be the foundation of a web app that reports User Story data back to Rally users.  It augments Rally proper primarily as an extention to the reporting capabilities.  For example, if you are more concerned with the throughput of your dev teams than their velocity, Rallytastic is going to help you build custom fit measuring tools for that.  It has built in helpers to walk through the revision logs of your stories and identify key events in their lifecycle.  You can track work in progress(WIP) levels over time, measure how long stories sit prioritized on your backlog before dev starts,  identify queues and bottlenecks anywhere between story definition time and release, and much more.
 
-== Congiguration
+== Configuration
 
 In a file that is required from lib/rallytastic.rb, you can configure Rally authentication.
   RallyAPI::configure do |config|
